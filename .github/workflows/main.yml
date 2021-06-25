@@ -9,7 +9,18 @@ jobs:
     name: A job to print available space
     steps:
       - uses: actions/checkout@v2
-      - id: available-space
+      - name: get avialable space
+        id: available-space
         uses: ./
       - run: echo available-space ${{ steps.available-space.outputs.available-space }}
         shell: bash
+      - name: never clean
+        uses: ./
+        with:
+          clean-threadshold: 0
+          clean: echo "Never execute"
+      - name: always clean
+        uses: ./
+        with:
+          clean-threadshold: 1000000000
+          clean: echo "Always execute"

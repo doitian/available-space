@@ -5,6 +5,12 @@ inputs:
     description: 'Return the available space of the disk containing the directory specified by the path'
     required: false
     default: '${{ github.workspace }}'
+  clean-threadshold:
+    description: 'Run clean command when available space in megabytes is less than the threadshold'
+    required: false
+  clean:
+    description: 'Run this command in bash when available space in megabytes is less than the threadshold'
+    required: false
 outputs:
   available-space:
     description: "Available space in megabytes"
@@ -14,4 +20,10 @@ runs:
   steps:
     - id: available-space
       run: echo "::set-output name=available-space::$(df -m "${{ inputs.path }}" | tail -1 | awk '{print $4}')"
+      shell: bash
+    - run: |
+        if [[ -n "${{ inputs.clean-threadshold }}" && "${{ steps.available-space.outputs.available-space }}" -lt "${{ inputs.clean-threadshold }}" ]]; then
+          echo "Run clean command"
+          ${{ inputs.clean }}
+        fi
       shell: bash
