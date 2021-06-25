@@ -1,0 +1,15 @@
+on: [push]
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    name: A job to print available space
+    steps:
+      - uses: actions/checkout@v2
+      - id: available-space
+        uses: ./
+      - run: echo available-space ${{ steps.available-space.outputs.available-space }}
+        shell: bash

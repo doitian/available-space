@@ -1,0 +1,17 @@
+name: 'Disk Available Space'
+description: 'Get available space of the specified disk'
+inputs:
+  path:
+    description: 'Return the available space of the disk containing the directory specified by the path'
+    required: false
+    default: '${{ github.workspace }}'
+outputs:
+  available-space:
+    description: "Available space in megabytes"
+    value: ${{ steps.available-space.outputs.available-space }}
+runs:
+  using: "composite"
+  steps:
+    - id: available-space
+      run: echo "::set-output name=available-space::$(df -m "${{ inputs.path }}" | tail -1 | awk '{print $4}')"
+      shell: bash
