@@ -17,10 +17,10 @@ jobs:
       - name: never clean
         uses: ./
         with:
-          clean-threadshold: 0
+          clean-threshold: 0
           clean: echo "Never execute"
       - name: always clean
         uses: ./
         with:
-          clean-threadshold: 1000000000
+          clean-threshold: 1000000000
           clean: echo "Always execute"
